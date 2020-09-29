@@ -2,6 +2,9 @@ package com.newsinfo.model;
 
 import lombok.Data;
 
+/**
+ * Facilitates the scope of Objects throughout the application
+ */
 @Data
 public class NewsContext {
 

@@ -5,6 +5,9 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Transactional properties provider
+ */
 @Getter
 public class TransactionDetails {
 
