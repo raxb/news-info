@@ -1,14 +1,19 @@
 package com.newsinfo.service;
 
-import com.newsinfo.dto.NewsDetailsDTO;
-import com.newsinfo.model.NewsContext;
+import com.newsinfo.dto.NewsInitializerDTO;
+import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.model.NewsResponse;
 import com.newsinfo.model.TransactionDetails;
+import com.newsinfo.repository.NewsInitializerRepository;
 import com.newsinfo.service.implementation.NewsDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.UUID;
 
 /**
  * Entry Service for building up the request, processing and persisting delegation
@@ -18,29 +23,23 @@ import org.springframework.stereotype.Service;
 public class NewsFeederService {
 
     private final NewsDetailsServiceImpl newsDetailsServiceImpl;
-    private NewsDetailsDTO newsDetailsDTO;
+    private final NewsInitializerRepository newsInitializerRepository;
+    private NewsInitializerDTO newsInitializerDTO;
     private TransactionDetails transactionDetails;
+    private NewsRequest newsRequest;
+    private NewsResponse newsResponse;
 
     /**
      * Facilitates for News building from the primitive request
      *
      * @param newsRequest client request
-     * @return formatted response
      */
-    public NewsResponse createNewTopicWithDetails(NewsRequest newsRequest) {
-        NewsContext context = new NewsContext();
-        NewsResponse newsResponse = new NewsResponse();
+    public void createNewTopicWithDetails(NewsRequest newsRequest) {
+        this.newsRequest = newsRequest;
         transactionDetails = new TransactionDetails();
 
-        context.setTransactionDetails(transactionDetails);
-        context.setNewsRequest(newsRequest);
-
         populateNewsDetailsDTOWithRequest(newsRequest);
-        newsDetailsServiceImpl.saveNews(newsDetailsDTO);
-
-        newsResponse.setTransactionDetails(transactionDetails);
-        newsResponse.setNewsRequest(newsRequest);
-        return newsResponse;
+        newsDetailsServiceImpl.saveNews(newsInitializerDTO);
     }
 
     /**
@@ -49,12 +48,36 @@ public class NewsFeederService {
      * @param newsRequest client request
      */
     private void populateNewsDetailsDTOWithRequest(NewsRequest newsRequest) {
-        newsDetailsDTO = new NewsDetailsDTO();
-        newsDetailsDTO.setTransactionId(transactionDetails.getTransactionId().toString());
-        newsDetailsDTO.setTransactionTimestamp(transactionDetails.getTransactionDate().toString());
-        newsDetailsDTO.setTopic(newsRequest.getTopic());
-        newsDetailsDTO.setLocation(newsRequest.getEventLocation());
-        newsDetailsDTO.setReporterId(newsRequest.getNewsInfoIdentifier());
-        newsDetailsDTO.setImages(newsRequest.getImages());
+        newsInitializerDTO = new NewsInitializerDTO();
+        newsInitializerDTO.setTransactionId(transactionDetails.getTransactionId().toString());
+        newsInitializerDTO.setTransactionDate(transactionDetails.getTransactionDate().toString());
+        newsInitializerDTO.setTransactionTime(transactionDetails.getTransactionTime().toString());
+        newsInitializerDTO.setTopic(newsRequest.getTopic());
+        newsInitializerDTO.setLocation(newsRequest.getEventLocation());
+        newsInitializerDTO.setReporterId(newsRequest.getNewsInfoIdentifier());
+        newsInitializerDTO.setImages(newsRequest.getImages());
+        newsInitializerDTO.setUpdated(false);
+    }
+
+    public NewsResponse generateResponse() {
+        newsResponse = new NewsResponse();
+        newsResponse.setTransactionDetails(transactionDetails);
+        newsResponse.setNewsRequest(newsRequest);
+        return newsResponse;
+    }
+
+    public NewsResponse updateRequest(NewsRequest newsRequest, String transactionId) {
+        NewsInitializer newsTopic = newsInitializerRepository.findByTransactionId(transactionId);
+
+        NewsInitializer updatedEntity = newsDetailsServiceImpl.updateNews(newsTopic, newsRequest);
+
+        newsResponse = new NewsResponse();
+        transactionDetails = new TransactionDetails(
+                UUID.fromString(updatedEntity.getTransactionId()),
+                LocalDate.parse(updatedEntity.getTransactionDate()),
+                LocalTime.parse(updatedEntity.getTransactionTime()));
+        newsResponse.setTransactionDetails(transactionDetails);
+        newsResponse.setNewsRequest(newsRequest);
+        return newsResponse;
     }
 }

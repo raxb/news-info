@@ -6,12 +6,14 @@ import lombok.Data;
  * An intermediary between the Domain-Entity and Request Object
  */
 @Data
-public class NewsDetailsDTO {
+public class NewsInitializerDTO {
     private long id;
     private String transactionId;
-    private String transactionTimestamp;
+    private String transactionDate;
+    private String transactionTime;
     private String topic;
     private String location;
     private String reporterId;
     private String images;
+    private boolean isUpdated;
 }

@@ -2,7 +2,8 @@ package com.newsinfo.model;
 
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 /**
@@ -12,10 +13,18 @@ import java.util.UUID;
 public class TransactionDetails {
 
     private final UUID transactionId;
-    private final LocalDateTime transactionDate;
+    private final LocalDate transactionDate;
+    private final LocalTime transactionTime;
 
     public TransactionDetails() {
         this.transactionId = UUID.randomUUID();
-        this.transactionDate = java.time.LocalDateTime.now();
+        this.transactionDate = java.time.LocalDate.now();
+        this.transactionTime = java.time.LocalTime.now();
+    }
+
+    public TransactionDetails(UUID transactionId, LocalDate transactionDate, LocalTime transactionTime) {
+        this.transactionId = transactionId;
+        this.transactionDate = transactionDate;
+        this.transactionTime = transactionTime;
     }
 }

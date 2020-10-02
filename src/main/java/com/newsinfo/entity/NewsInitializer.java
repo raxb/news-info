@@ -8,9 +8,9 @@ import javax.persistence.*;
  * JPA Entity for CRUD operations
  */
 @Entity
-@Table(name = "NEWS_DETAILS")
+@Table(name = "NEWS_INITIALIZER")
 @Data
-public class NewsDetails {
+public class NewsInitializer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +20,7 @@ public class NewsDetails {
     private String location;
     private String reporterId;
     private String images;
-    private String transactionTimestamp;
+    private String transactionDate;
+    private String transactionTime;
+    private boolean isUpdated;
 }

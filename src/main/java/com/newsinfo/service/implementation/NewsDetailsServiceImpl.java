@@ -1,12 +1,17 @@
 package com.newsinfo.service.implementation;
 
-import com.newsinfo.dto.NewsDetailsDTO;
-import com.newsinfo.entity.NewsDetails;
-import com.newsinfo.repository.NewsDetailsRepository;
+import com.newsinfo.dto.NewsInitializerDTO;
+import com.newsinfo.entity.NewsInitializer;
+import com.newsinfo.model.NewsRequest;
+import com.newsinfo.repository.NewsInitializerRepository;
 import com.newsinfo.service.NewsDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * Class handling low-level implementations and processings
@@ -15,34 +20,58 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class NewsDetailsServiceImpl implements NewsDetailsService {
 
-    private final NewsDetailsRepository newsDetailsRepository;
+    private final NewsInitializerRepository newsInitializerRepository;
 
     /**
      * Persist to the defined Entity
      *
-     * @param newsDetailsDTO object for data-store
+     * @param newsInitializerDTO object for data-store
      * @return transactionId for reference
      */
     @Override
-    public String saveNews(NewsDetailsDTO newsDetailsDTO) {
-        NewsDetails newsDetails = populateNewsDetailsEntity(newsDetailsDTO);
-        return newsDetailsRepository.save(newsDetails).getTransactionId();
+    public String saveNews(NewsInitializerDTO newsInitializerDTO) {
+        NewsInitializer newsInitializer = populateNewsDetailsEntity(newsInitializerDTO);
+        return newsInitializerRepository.save(newsInitializer).getTransactionId();
     }
 
     /**
      * Mapper from DTO to Entity
      *
-     * @param newsDetailsDTO object for data-store
+     * @param newsInitializerDTO object for data-store
      * @return persistent Entity
      */
-    private NewsDetails populateNewsDetailsEntity(NewsDetailsDTO newsDetailsDTO) {
-        NewsDetails newsDetails = new NewsDetails();
-        newsDetails.setTransactionId(newsDetailsDTO.getTransactionId());
-        newsDetails.setTopic(newsDetailsDTO.getTopic());
-        newsDetails.setLocation(newsDetailsDTO.getLocation());
-        newsDetails.setReporterId(newsDetailsDTO.getReporterId());
-        newsDetails.setImages(newsDetailsDTO.getImages());
-        newsDetails.setTransactionTimestamp(newsDetailsDTO.getTransactionTimestamp());
-        return newsDetails;
+    private NewsInitializer populateNewsDetailsEntity(NewsInitializerDTO newsInitializerDTO) {
+        NewsInitializer newsInitializer = new com.newsinfo.entity.NewsInitializer();
+        newsInitializer.setTransactionId(newsInitializerDTO.getTransactionId());
+        newsInitializer.setTopic(newsInitializerDTO.getTopic());
+        newsInitializer.setLocation(newsInitializerDTO.getLocation());
+        newsInitializer.setReporterId(newsInitializerDTO.getReporterId());
+        newsInitializer.setImages(newsInitializerDTO.getImages());
+        newsInitializer.setTransactionDate(newsInitializerDTO.getTransactionDate());
+        newsInitializer.setTransactionTime(newsInitializerDTO.getTransactionTime());
+        return newsInitializer;
     }
+
+    @Override
+    public NewsInitializer updateNews(NewsInitializer newsTopic, NewsRequest modifiedNewsRequest) {
+        isNewsModifiable(newsTopic);
+
+        newsTopic.setTopic(modifiedNewsRequest.getTopic());
+        newsTopic.setLocation(modifiedNewsRequest.getEventLocation());
+        newsTopic.setReporterId(modifiedNewsRequest.getNewsInfoIdentifier());
+        newsTopic.setImages(modifiedNewsRequest.getImages());
+        newsTopic.setUpdated(true);
+        return newsInitializerRepository.save(newsTopic);
+    }
+
+    private void isNewsModifiable(NewsInitializer newsTopic) {
+        LocalDate reportedDate = LocalDate.parse(newsTopic.getTransactionDate());
+        LocalTime reportedTime = LocalTime.parse(newsTopic.getTransactionTime());
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        if (newsTopic.isUpdated() || (reportedDate.isBefore(currentDate) || Duration.between(reportedTime,
+                currentTime).toMinutes() > 15)) throw new RuntimeException();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.newsinfo.model;
 
+import com.newsinfo.entity.NewsInitializer;
 import lombok.Data;
 
 /**
@@ -8,7 +9,7 @@ import lombok.Data;
 @Data
 public class NewsContext {
 
-    private NewsRequest newsRequest;
+    private NewsInitializer newsInitializer;
     private TransactionDetails transactionDetails;
     private int endorsers;
 }
