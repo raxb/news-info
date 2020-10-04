@@ -10,5 +10,5 @@ import com.newsinfo.model.NewsRequest;
 public interface NewsDetailsService {
     String saveNews(NewsInitializerDTO newsInitializerDTO);
 
-    com.newsinfo.entity.NewsInitializer updateNews(NewsInitializer newsInitializer, NewsRequest modifiedNewsRequest);
+    NewsInitializer updateNews(NewsInitializer newsInitializer, NewsRequest modifiedNewsRequest);
 }

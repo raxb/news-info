@@ -1,6 +1,7 @@
 package com.newsinfo.service.implementation;
 
 import com.newsinfo.dto.NewsInitializerDTO;
+import com.newsinfo.entity.EndorsersFeed;
 import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.repository.NewsInitializerRepository;
@@ -31,6 +32,7 @@ public class NewsDetailsServiceImpl implements NewsDetailsService {
     @Override
     public String saveNews(NewsInitializerDTO newsInitializerDTO) {
         NewsInitializer newsInitializer = populateNewsDetailsEntity(newsInitializerDTO);
+
         return newsInitializerRepository.save(newsInitializer).getTransactionId();
     }
 
@@ -41,7 +43,7 @@ public class NewsDetailsServiceImpl implements NewsDetailsService {
      * @return persistent Entity
      */
     private NewsInitializer populateNewsDetailsEntity(NewsInitializerDTO newsInitializerDTO) {
-        NewsInitializer newsInitializer = new com.newsinfo.entity.NewsInitializer();
+        NewsInitializer newsInitializer = new NewsInitializer();
         newsInitializer.setTransactionId(newsInitializerDTO.getTransactionId());
         newsInitializer.setTopic(newsInitializerDTO.getTopic());
         newsInitializer.setLocation(newsInitializerDTO.getLocation());
@@ -49,7 +51,15 @@ public class NewsDetailsServiceImpl implements NewsDetailsService {
         newsInitializer.setImages(newsInitializerDTO.getImages());
         newsInitializer.setTransactionDate(newsInitializerDTO.getTransactionDate());
         newsInitializer.setTransactionTime(newsInitializerDTO.getTransactionTime());
+        createEndorserEntry(newsInitializer);
         return newsInitializer;
+    }
+
+    private void createEndorserEntry(NewsInitializer newsInitializer) {
+        EndorsersFeed endorsersFeed = new EndorsersFeed();
+        endorsersFeed.setNewsInitializer(newsInitializer);
+        endorsersFeed.setPollCount(0);
+        newsInitializer.setEndorsersFeed(endorsersFeed);
     }
 
     @Override

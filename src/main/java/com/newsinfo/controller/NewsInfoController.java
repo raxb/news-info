@@ -2,7 +2,7 @@ package com.newsinfo.controller;
 
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.model.NewsResponse;
-import com.newsinfo.repository.NewsInitializerRepository;
+import com.newsinfo.service.EndorsersFeederService;
 import com.newsinfo.service.NewsFeederService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class NewsInfoController {
 
     private final NewsFeederService newsFeederService;
-    private final NewsInitializerRepository newsInitializerRepository;
+    private final EndorsersFeederService endorsersFeederService;
 
     /**
      * Invoked when a reporter needs to report a News
@@ -58,8 +58,14 @@ public class NewsInfoController {
      */
 
     /**
-     * Get Method for fetching the Endorser News Feeds information with NewsTopic that were polled
-     * Generic to display NewsTopic and the current number of endorsers
+     * Get Method for fetching the Endorser News Feeds information with NewsTopic that were polled Generic to display
+     * NewsTopic and the current number of endorsers
      */
+    @GetMapping("/allEndorsersFeed")
+    public ResponseEntity<String> fetchEndorsersFeedData() {
+        String feedData = endorsersFeederService.getEndorsersFeed();
+        return ResponseEntity.ok(feedData);
+    }
+
 
 }

@@ -68,7 +68,6 @@ public class NewsFeederService {
 
     public NewsResponse updateRequest(NewsRequest newsRequest, String transactionId) {
         NewsInitializer newsTopic = newsInitializerRepository.findByTransactionId(transactionId);
-
         NewsInitializer updatedEntity = newsDetailsServiceImpl.updateNews(newsTopic, newsRequest);
 
         newsResponse = new NewsResponse();

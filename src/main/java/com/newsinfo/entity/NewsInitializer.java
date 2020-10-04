@@ -1,20 +1,24 @@
 package com.newsinfo.entity;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * JPA Entity for CRUD operations
  */
-@Entity
+@Getter
+@Setter
+@Entity(name = "NewsInitializer")
 @Table(name = "NEWS_INITIALIZER")
-@Data
-public class NewsInitializer {
+public class NewsInitializer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long newsId;
     private String transactionId;
     private String topic;
     private String location;
@@ -23,4 +27,9 @@ public class NewsInitializer {
     private String transactionDate;
     private String transactionTime;
     private boolean isUpdated;
+
+    @OneToOne(mappedBy = "newsInitializer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private EndorsersFeed endorsersFeed;
+
 }

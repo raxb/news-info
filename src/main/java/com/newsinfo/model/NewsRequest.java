@@ -1,6 +1,5 @@
 package com.newsinfo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -19,6 +18,6 @@ public class NewsRequest {
     @JsonProperty("reporterId")
     private String newsInfoIdentifier;
 
-    @JsonIgnore
+    @JsonProperty("images")
     private String images;
 }

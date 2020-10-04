@@ -1,5 +1,6 @@
 package com.newsinfo.service.implementation;
 
+import com.newsinfo.entity.EndorsersFeed;
 import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.model.TransactionDetails;
@@ -24,6 +25,7 @@ class NewsDetailsServiceImplTest {
 
     private NewsRequest newsRequest;
     private NewsInitializer newsInitializer;
+    private EndorsersFeed endorsersFeed;
     private TransactionDetails transactionDetails;
 
     @InjectMocks
@@ -41,8 +43,9 @@ class NewsDetailsServiceImplTest {
         newsRequest.setNewsInfoIdentifier("KentC");
         newsRequest.setImages("None");
 
+        endorsersFeed = new EndorsersFeed();
         newsInitializer = new NewsInitializer();
-        newsInitializer.setId(1);
+        newsInitializer.setNewsId(1L);
         newsInitializer.setTopic("Bruce Wayne is Batman");
         newsInitializer.setLocation("Gotham");
         newsInitializer.setReporterId("KentC");

@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class NewsInitializerDTO {
-    private long id;
+    private long newsId;
     private String transactionId;
     private String transactionDate;
     private String transactionTime;
