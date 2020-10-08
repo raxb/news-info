@@ -1,6 +1,19 @@
+http://localhost:8080/v1/newsinfo/posttopic
 {
-  "topic": "first_news",
-  "location": "home",
-  "reporterId": "vivek",
-  "images": "NA"
+"topic": "news_1",
+"location": "home",
+"reporterId": "vivek",
+"images": "NA"
+}
+
+http: //localhost:8080/v1/newsinfo/updatetopic/eebd4643-22ee-4872-963c-6391ad7cf1f8
+{
+"topic": "news_1_updated",
+"location": "home",
+"reporterId": "vivek",
+"images": "NA"
+}
+
+http: //localhost:8080/v1/newsinfo/allEndorsersFeed
+{
 }

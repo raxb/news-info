@@ -1,0 +1,6 @@
+http://localhost:8080/v1/endorser/register
+{
+"firstName": "vivek",
+"lastName": "ravikumar",
+"location": "coimbatore"
+}

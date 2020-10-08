@@ -51,13 +51,14 @@ public class NewsDetailsServiceImpl implements NewsDetailsService {
         newsInitializer.setImages(newsInitializerDTO.getImages());
         newsInitializer.setTransactionDate(newsInitializerDTO.getTransactionDate());
         newsInitializer.setTransactionTime(newsInitializerDTO.getTransactionTime());
-        createEndorserEntry(newsInitializer);
+        createEndorserEntry(newsInitializer, newsInitializerDTO);
         return newsInitializer;
     }
 
-    private void createEndorserEntry(NewsInitializer newsInitializer) {
+    private void createEndorserEntry(NewsInitializer newsInitializer, NewsInitializerDTO newsInitializerDTO) {
         EndorsersFeed endorsersFeed = new EndorsersFeed();
         endorsersFeed.setNewsInitializer(newsInitializer);
+        endorsersFeed.setTransactionId(newsInitializerDTO.getTransactionId());
         endorsersFeed.setPollCount(0);
         newsInitializer.setEndorsersFeed(endorsersFeed);
     }

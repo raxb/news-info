@@ -16,6 +16,8 @@ public class EndorsersFeed implements Serializable {
     @Id
     private Long newsId;
 
+    private String transactionId;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "newsId")
     @MapsId

@@ -45,17 +45,16 @@ public class NewsInfoController {
         return ResponseEntity.ok(newsResponse);
     }
 
-
     /**
-     * Method to persist to Endorser News Feeds
-     * from the Reporter News Feeds once the modification time has been lapsed(15 minutes)
+     * Post method for Endorser to poll on the NewsTopic and redirect call to Endorser profile, for recording the
+     * NewsTopic and their poll and internally call to persist Endorsers List based on time to get initial 100 endorsers
+     * for rewarding
      */
-
-    /**
-     * Post method for Endorser to poll on the NewsTopic and
-     * redirect call to Endorser profile, for recording the NewsTopic and their poll
-     * and internally call to persist Endorsers List based on time to get initial 100 endorsers for rewarding
-     */
+    @PutMapping("/pollForNews/{newsId}")
+    public ResponseEntity<String> castVoteForNews(@PathVariable String newsId) {
+        //endorsersFeederService.voteForNews(newsId);
+        return null;
+    }
 
     /**
      * Get Method for fetching the Endorser News Feeds information with NewsTopic that were polled Generic to display

@@ -18,7 +18,8 @@ public interface NewsInitializerRepository extends JpaRepository<NewsInitializer
     NewsInitializer findByTransactionId(@Param("transactionId") String transactionId);
 
     @Query(value = "select * from news_info.news_initializer where \n" +
-            "str_to_date(transaction_time,'%H:%i:%s') < (select subtime(now(),'00:15:00')) order by transaction_date " +
+            "(str_to_date(transaction_time,'%H:%i:%s') < (select subtime(now(),'00:15:00')) and date" +
+            "(transaction_date) = date(now())) or date(transaction_date) < date(now()) order by transaction_date " +
             "desc, transaction_time desc", nativeQuery = true)
     List<NewsInitializer> findAllSortedByNewsPosted();
 }
