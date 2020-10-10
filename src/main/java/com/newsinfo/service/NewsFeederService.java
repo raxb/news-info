@@ -1,6 +1,6 @@
 package com.newsinfo.service;
 
-import com.newsinfo.dto.NewsInitializerDTO;
+import com.newsinfo.dto.NewsInitializerDAO;
 import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.model.NewsResponse;
@@ -24,7 +24,7 @@ public class NewsFeederService {
 
     private final NewsDetailsServiceImpl newsDetailsServiceImpl;
     private final NewsInitializerRepository newsInitializerRepository;
-    private NewsInitializerDTO newsInitializerDTO;
+    private NewsInitializerDAO newsInitializerDAO;
     private TransactionDetails transactionDetails;
     private NewsRequest newsRequest;
     private NewsResponse newsResponse;
@@ -39,7 +39,7 @@ public class NewsFeederService {
         transactionDetails = new TransactionDetails();
 
         populateNewsDetailsDTOWithRequest(newsRequest);
-        newsDetailsServiceImpl.saveNews(newsInitializerDTO);
+        newsDetailsServiceImpl.saveNews(newsInitializerDAO);
     }
 
     /**
@@ -48,15 +48,15 @@ public class NewsFeederService {
      * @param newsRequest client request
      */
     private void populateNewsDetailsDTOWithRequest(NewsRequest newsRequest) {
-        newsInitializerDTO = new NewsInitializerDTO();
-        newsInitializerDTO.setTransactionId(transactionDetails.getTransactionId().toString());
-        newsInitializerDTO.setTransactionDate(transactionDetails.getTransactionDate().toString());
-        newsInitializerDTO.setTransactionTime(transactionDetails.getTransactionTime().toString());
-        newsInitializerDTO.setTopic(newsRequest.getTopic());
-        newsInitializerDTO.setLocation(newsRequest.getEventLocation());
-        newsInitializerDTO.setReporterId(newsRequest.getNewsInfoIdentifier());
-        newsInitializerDTO.setImages(newsRequest.getImages());
-        newsInitializerDTO.setUpdated(false);
+        newsInitializerDAO = new NewsInitializerDAO();
+        newsInitializerDAO.setTransactionId(transactionDetails.getTransactionId().toString());
+        newsInitializerDAO.setTransactionDate(transactionDetails.getTransactionDate().toString());
+        newsInitializerDAO.setTransactionTime(transactionDetails.getTransactionTime().toString());
+        newsInitializerDAO.setTopic(newsRequest.getTopic());
+        newsInitializerDAO.setLocation(newsRequest.getEventLocation());
+        newsInitializerDAO.setReporterId(newsRequest.getNewsInfoIdentifier());
+        newsInitializerDAO.setImages(newsRequest.getImages());
+        newsInitializerDAO.setUpdated(false);
     }
 
     public NewsResponse generateResponse() {

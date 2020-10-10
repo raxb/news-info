@@ -1,7 +1,6 @@
 package com.newsinfo.service.implementation;
 
-import com.newsinfo.dto.NewsInitializerDTO;
-import com.newsinfo.entity.EndorsersFeed;
+import com.newsinfo.dto.NewsInitializerDAO;
 import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.repository.NewsInitializerRepository;
@@ -22,45 +21,40 @@ import java.time.LocalTime;
 public class NewsDetailsServiceImpl implements NewsDetailsService {
 
     private final NewsInitializerRepository newsInitializerRepository;
+    private final EndorserFeederServiceImpl endorserFeederServiceImpl;
 
     /**
      * Persist to the defined Entity
      *
-     * @param newsInitializerDTO object for data-store
+     * @param newsInitializerDAO object for data-store
      * @return transactionId for reference
      */
     @Override
-    public String saveNews(NewsInitializerDTO newsInitializerDTO) {
-        NewsInitializer newsInitializer = populateNewsDetailsEntity(newsInitializerDTO);
+    public String saveNews(NewsInitializerDAO newsInitializerDAO) {
+        NewsInitializer newsInitializer = populateNewsDetailsEntity(newsInitializerDAO);
 
-        return newsInitializerRepository.save(newsInitializer).getTransactionId();
+        newsInitializerRepository.save(newsInitializer);
+        endorserFeederServiceImpl.createEndorserEntry(newsInitializer, newsInitializerDAO);
+        newsInitializerRepository.flush();
+        return newsInitializer.getTransactionId();
     }
 
     /**
      * Mapper from DTO to Entity
      *
-     * @param newsInitializerDTO object for data-store
+     * @param newsInitializerDAO object for data-store
      * @return persistent Entity
      */
-    private NewsInitializer populateNewsDetailsEntity(NewsInitializerDTO newsInitializerDTO) {
+    private NewsInitializer populateNewsDetailsEntity(NewsInitializerDAO newsInitializerDAO) {
         NewsInitializer newsInitializer = new NewsInitializer();
-        newsInitializer.setTransactionId(newsInitializerDTO.getTransactionId());
-        newsInitializer.setTopic(newsInitializerDTO.getTopic());
-        newsInitializer.setLocation(newsInitializerDTO.getLocation());
-        newsInitializer.setReporterId(newsInitializerDTO.getReporterId());
-        newsInitializer.setImages(newsInitializerDTO.getImages());
-        newsInitializer.setTransactionDate(newsInitializerDTO.getTransactionDate());
-        newsInitializer.setTransactionTime(newsInitializerDTO.getTransactionTime());
-        createEndorserEntry(newsInitializer, newsInitializerDTO);
+        newsInitializer.setTransactionId(newsInitializerDAO.getTransactionId());
+        newsInitializer.setTopic(newsInitializerDAO.getTopic());
+        newsInitializer.setLocation(newsInitializerDAO.getLocation());
+        newsInitializer.setReporterId(newsInitializerDAO.getReporterId());
+        newsInitializer.setImages(newsInitializerDAO.getImages());
+        newsInitializer.setTransactionDate(newsInitializerDAO.getTransactionDate());
+        newsInitializer.setTransactionTime(newsInitializerDAO.getTransactionTime());
         return newsInitializer;
-    }
-
-    private void createEndorserEntry(NewsInitializer newsInitializer, NewsInitializerDTO newsInitializerDTO) {
-        EndorsersFeed endorsersFeed = new EndorsersFeed();
-        endorsersFeed.setNewsInitializer(newsInitializer);
-        endorsersFeed.setTransactionId(newsInitializerDTO.getTransactionId());
-        endorsersFeed.setPollCount(0);
-        newsInitializer.setEndorsersFeed(endorsersFeed);
     }
 
     @Override

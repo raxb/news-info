@@ -6,7 +6,7 @@ import lombok.Data;
  * An intermediary between the Domain-Entity and Request Object
  */
 @Data
-public class NewsInitializerDTO {
+public class NewsInitializerDAO {
     private long newsId;
     private String transactionId;
     private String transactionDate;

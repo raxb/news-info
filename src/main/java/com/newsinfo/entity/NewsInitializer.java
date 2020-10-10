@@ -1,6 +1,6 @@
 package com.newsinfo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,8 +28,9 @@ public class NewsInitializer implements Serializable {
     private String transactionTime;
     private boolean isUpdated;
 
-    @OneToOne(mappedBy = "newsInitializer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    @JsonManagedReference
     private EndorsersFeed endorsersFeed;
 
 }

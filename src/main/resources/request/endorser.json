@@ -1,6 +1,12 @@
-http://localhost:8080/v1/endorser/register
+http: //localhost:8080/v1/endorser/register
 {
 "firstName": "vivek",
 "lastName": "ravikumar",
 "location": "coimbatore"
+}
+http: //localhost:8080/v1/endorser/allEndorsersFeed
+{
+}
+http: //localhost:8080/v1/endorser/pollForNews/5
+{
 }

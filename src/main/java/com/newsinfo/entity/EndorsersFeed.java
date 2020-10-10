@@ -1,10 +1,11 @@
 package com.newsinfo.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Getter
@@ -17,12 +18,6 @@ public class EndorsersFeed implements Serializable {
     private Long newsId;
 
     private String transactionId;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "newsId")
-    @MapsId
-    @JsonManagedReference
-    private NewsInitializer newsInitializer;
 
     private Integer pollCount;
 }
