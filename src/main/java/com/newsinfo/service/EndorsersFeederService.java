@@ -10,5 +10,5 @@ public interface EndorsersFeederService {
 
     String getEndorsersFeed();
 
-    void voteForNews(String newsId);
+    void voteForNews(String endorserId, String newsId);
 }

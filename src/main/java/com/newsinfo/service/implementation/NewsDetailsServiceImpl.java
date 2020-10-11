@@ -76,7 +76,8 @@ public class NewsDetailsServiceImpl implements NewsDetailsService {
         LocalTime currentTime = LocalTime.now();
 
         if (newsTopic.isUpdated() || (reportedDate.isBefore(currentDate) || Duration.between(reportedTime,
-                currentTime).toMinutes() > 15)) throw new RuntimeException();
+                currentTime).toMinutes() > 15)) throw new RuntimeException("News already updated or updation time has" +
+                " lapsed");
     }
 
 }

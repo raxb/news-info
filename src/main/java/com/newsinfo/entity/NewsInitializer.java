@@ -28,7 +28,7 @@ public class NewsInitializer implements Serializable {
     private String transactionTime;
     private boolean isUpdated;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @PrimaryKeyJoinColumn
     @JsonManagedReference
     private EndorsersFeed endorsersFeed;

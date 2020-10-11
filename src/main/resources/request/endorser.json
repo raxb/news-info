@@ -7,6 +7,6 @@ http: //localhost:8080/v1/endorser/register
 http: //localhost:8080/v1/endorser/allEndorsersFeed
 {
 }
-http: //localhost:8080/v1/endorser/pollForNews/5
+http: //localhost:8080/v1/endorser/NEN_00002/pollForNews/7
 {
 }

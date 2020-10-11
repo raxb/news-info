@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(path = "/v1/endorser", consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,9 +40,9 @@ public class EndorsersController {
      * NewsTopic and their poll and internally call to persist Endorsers List based on time to get initial 100 endorsers
      * for rewarding
      */
-    @PutMapping("/pollForNews/{newsId}")
-    public ResponseEntity<String> castVoteForNews(@PathVariable String newsId) {
-        endorsersFeederService.voteForNews(newsId);
-        return null;
+    @PutMapping("/{endorserId}/pollForNews/{newsId}")
+    public ResponseEntity<?> castVoteForNews(@PathVariable String endorserId, @PathVariable String newsId) {
+        endorsersFeederService.voteForNews(endorserId, newsId);
+        return ResponseEntity.of(Optional.empty());
     }
 }
