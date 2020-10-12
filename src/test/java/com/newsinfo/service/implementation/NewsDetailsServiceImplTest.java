@@ -40,7 +40,7 @@ class NewsDetailsServiceImplTest {
         newsRequest = new NewsRequest();
         newsRequest.setTopic("Bruce Wayne is Batman");
         newsRequest.setEventLocation("Gotham");
-        newsRequest.setNewsInfoIdentifier("KentC");
+        newsRequest.setReporterId("KentC");
         newsRequest.setImages("None");
 
         endorsersFeed = new EndorsersFeed();

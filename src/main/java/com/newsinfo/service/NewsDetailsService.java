@@ -8,7 +8,8 @@ import com.newsinfo.model.NewsRequest;
  * Define generic functionality
  */
 public interface NewsDetailsService {
-    String saveNews(NewsInitializerDAO newsInitializerDAO);
+    void saveNews(NewsInitializerDAO newsInitializerDAO);
 
     NewsInitializer updateNews(NewsInitializer newsInitializer, NewsRequest modifiedNewsRequest);
+    //String deleteNews(String reporterId);
 }

@@ -3,7 +3,6 @@ package com.newsinfo.service.implementation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newsinfo.constants.Constants;
-import com.newsinfo.dto.NewsInitializerDAO;
 import com.newsinfo.entity.EndorserProfile;
 import com.newsinfo.entity.EndorsersFeed;
 import com.newsinfo.entity.NewsInitializer;
@@ -32,12 +31,13 @@ public class EndorserFeederServiceImpl implements EndorsersFeederService {
     private final EndorsersFeedRepository endorsersFeedRepository;
     private final PolledEndorsedNewsRepository polledEndorsedNewsRepository;
 
-    public void createEndorserEntry(NewsInitializer newsInitializer, NewsInitializerDAO newsInitializerDAO) {
+    @Override
+    public EndorsersFeed createEndorserFeedEntry(long newsId, String transactionId) {
         EndorsersFeed endorsersFeed = new EndorsersFeed();
-        endorsersFeed.setNewsId(newsInitializer.getNewsId());
-        endorsersFeed.setTransactionId(newsInitializerDAO.getTransactionId());
+        endorsersFeed.setNewsId(newsId);
+        endorsersFeed.setTransactionId(transactionId);
         endorsersFeed.setPollCount(Constants.INITIALIZER_POLL_COUNT);
-        newsInitializer.setEndorsersFeed(endorsersFeed);
+        return endorsersFeed;
     }
 
     @Override
