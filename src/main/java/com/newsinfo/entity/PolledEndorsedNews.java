@@ -14,7 +14,7 @@ import java.util.Objects;
 public class PolledEndorsedNews implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long Id;
     private String newsId;
     private String polledDateTimestamp;

@@ -1,15 +1,17 @@
 package com.newsinfo.controller;
 
 import com.newsinfo.model.NewsRequest;
-import com.newsinfo.model.NewsResponse;
 import com.newsinfo.service.NewsFeederHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.ws.Response;
+import java.util.Map;
 
 /**
  * Class handling requests and responses from the Client
@@ -22,26 +24,12 @@ public class NewsInfoController {
 
     private final NewsFeederHelper newsFeederHelper;
 
-    /**
-     * Invoked when a reporter needs to report a News
-     *
-     * @param newsRequest schema for the News
-     * @return entity facilitating body and headers
-     */
-    @PostMapping("/posttopic")
-    public ResponseEntity<NewsResponse> submitNewsTopic(@RequestBody NewsRequest newsRequest) {
-        NewsResponse newsResponse = newsFeederHelper.createNewTopicWithDetails(newsRequest);
-        return ResponseEntity.ok(newsResponse);
+    public Map<String, Object> submitNewsTopic(NewsRequest newsRequest) {
+        return newsFeederHelper.createNewTopicWithDetails(newsRequest);
     }
 
-    /**
-     * Put method for updating within 15 minutes the NewsTopic that was posted (one-time modification)
-     */
-    @PutMapping("/updatetopic/{transactionId}")
-    public ResponseEntity<NewsResponse> updateNewsRequest(@RequestBody NewsRequest newsRequest,
-                                                          @PathVariable String transactionId) {
-        NewsResponse newsResponse = newsFeederHelper.updateRequest(newsRequest, transactionId);
-        return ResponseEntity.ok(newsResponse);
+    public Map<String, Object> updateNewsRequest(NewsRequest newsRequest, String reporterId, String newsId) {
+        return newsFeederHelper.updateRequest(newsRequest, reporterId, newsId);
     }
 
     @DeleteMapping("/{reporterId}/deleteNews/{transactionId}")

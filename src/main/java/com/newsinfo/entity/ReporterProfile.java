@@ -1,4 +1,3 @@
-/*
 package com.newsinfo.entity;
 
 import com.newsinfo.utils.generator.StringPrefixedSequenceIdGenerator;
@@ -29,7 +28,7 @@ public class ReporterProfile implements Serializable {
                     @Parameter(name =
                             StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "REP_"),
                     @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d")})
-    @Column(name = "profile_id")
+    @Column(name = "reporter_id")
     private String id;
     private String firstName;
     private String lastName;
@@ -39,6 +38,14 @@ public class ReporterProfile implements Serializable {
     @OneToMany(mappedBy = "reporterProfile", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<NewsInitializer> newsInitializerSet = new HashSet<>();
 
+    public void addNewsInitializer(NewsInitializer newsInitializer) {
+        newsInitializerSet.add(newsInitializer);
+        newsInitializer.setReporterProfile(this);
+    }
+
+    public void removeNewsInitializer(NewsInitializer newsInitializer) {
+        newsInitializerSet.remove(newsInitializer);
+        newsInitializer.setReporterProfile(null);
+    }
 
 }
-*/

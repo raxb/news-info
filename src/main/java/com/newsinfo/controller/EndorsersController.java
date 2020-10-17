@@ -2,6 +2,7 @@ package com.newsinfo.controller;
 
 import com.newsinfo.model.endorser.RegisterRequest;
 import com.newsinfo.repository.EndorserProfileRepository;
+import com.newsinfo.service.EndorserProfileService;
 import com.newsinfo.service.EndorsersFeederService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,12 @@ import java.util.Optional;
 public class EndorsersController {
 
     private final EndorserProfileRepository endorserProfileRepository;
+    private final EndorserProfileService endorserProfileService;
     private final EndorsersFeederService endorsersFeederService;
 
     @PostMapping("/register")
     public String registerEndorser(@RequestBody RegisterRequest registerRequest) {
-        return endorsersFeederService.registerEndorser(registerRequest);
+        return endorserProfileService.registerEndorser(registerRequest);
     }
 
     /**

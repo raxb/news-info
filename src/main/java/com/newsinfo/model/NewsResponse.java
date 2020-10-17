@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Data
 public class NewsResponse implements Serializable {
 
+    private String newsId;
     private TransactionDetails transactionDetails;
     private NewsRequest newsRequest;
 }

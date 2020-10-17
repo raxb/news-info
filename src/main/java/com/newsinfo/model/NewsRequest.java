@@ -15,9 +15,6 @@ public class NewsRequest {
     @JsonProperty("location")
     private String eventLocation;
 
-    @JsonProperty("reporterId")
-    private String reporterId;
-
     @JsonProperty("images")
     private String images;
 }

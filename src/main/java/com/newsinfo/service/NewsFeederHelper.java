@@ -11,8 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -33,13 +37,17 @@ public class NewsFeederHelper {
      *
      * @param newsRequest client request
      */
-    public NewsResponse createNewTopicWithDetails(NewsRequest newsRequest) {
+    public Map<String, Object> createNewTopicWithDetails(NewsRequest newsRequest) {
         this.newsRequest = newsRequest;
         transactionDetails = new TransactionDetails();
+        Map<String, Object> newsInitializerWithTransactions = new HashMap<>();
 
         populateNewsDetailsDAOWithRequest();
-        newsDetailsServiceImpl.saveNews(newsInitializerDAO);
-        return generateResponse(transactionDetails, newsRequest);
+        NewsInitializer newsInitializer = newsDetailsServiceImpl.saveNews(newsInitializerDAO);
+
+        newsInitializerWithTransactions.put("newsInitializer", newsInitializer);
+        newsInitializerWithTransactions.put("transactionDetails", transactionDetails);
+        return newsInitializerWithTransactions;
     }
 
     /**
@@ -52,26 +60,47 @@ public class NewsFeederHelper {
         newsInitializerDAO.setTransactionTime(transactionDetails.getTransactionTime().toString());
         newsInitializerDAO.setTopic(newsRequest.getTopic());
         newsInitializerDAO.setLocation(newsRequest.getEventLocation());
-        newsInitializerDAO.setReporterId(newsRequest.getReporterId());
         newsInitializerDAO.setImages(newsRequest.getImages());
         newsInitializerDAO.setUpdated(false);
     }
 
-    public NewsResponse updateRequest(NewsRequest newsRequestUpdate, String transactionId) {
-        NewsInitializer actualNews = newsInitializerRepository.findByTransactionId(transactionId);
+    public Map<String, Object> updateRequest(NewsRequest newsRequestUpdate, String reporterId, String newsId) {
+        NewsInitializer actualNews = newsInitializerRepository.findById(Long.valueOf(newsId)).orElseThrow(() -> new EntityNotFoundException(newsId));
+        Map<String, Object> newsInitializerWithTransactions = new HashMap<>();
+
+        if (reporterId.equals(actualNews.getReporterProfile().getId()))
+            isNewsModifiable(actualNews);
+        else
+            throw new RuntimeException("You are not allowed to update");
+
         NewsInitializer updatedEntity = newsDetailsServiceImpl.updateNews(actualNews, newsRequestUpdate);
 
         TransactionDetails transactionDetails = new TransactionDetails(
                 UUID.fromString(updatedEntity.getTransactionId()),
                 LocalDate.parse(updatedEntity.getTransactionDate()),
                 LocalTime.parse(updatedEntity.getTransactionTime()));
-        return generateResponse(transactionDetails, newsRequestUpdate);
+        newsInitializerWithTransactions.put("newsInitializer", updatedEntity);
+        newsInitializerWithTransactions.put("transactionDetails", transactionDetails);
+        return newsInitializerWithTransactions;
     }
 
-    private NewsResponse generateResponse(TransactionDetails generatedTransactions, NewsRequest newsRequested) {
+    public NewsResponse generateResponse(TransactionDetails generatedTransactions, NewsRequest newsRequested,
+                                         long newsId) {
         NewsResponse newsResponse = new NewsResponse();
+        newsResponse.setNewsId(String.valueOf(newsId));
         newsResponse.setTransactionDetails(generatedTransactions);
         newsResponse.setNewsRequest(newsRequested);
         return newsResponse;
+    }
+
+    public void isNewsModifiable(NewsInitializer actualNews) {
+        LocalDate reportedDate = LocalDate.parse(actualNews.getTransactionDate());
+        LocalTime reportedTime = LocalTime.parse(actualNews.getTransactionTime());
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        if (actualNews.isUpdated() || (reportedDate.isBefore(currentDate) || Duration.between(reportedTime,
+                currentTime).toMinutes() > 15)) throw new RuntimeException("News already updated or updation time has" +
+                " lapsed");
     }
 }
