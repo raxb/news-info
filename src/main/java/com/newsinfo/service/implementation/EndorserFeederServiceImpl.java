@@ -2,6 +2,7 @@ package com.newsinfo.service.implementation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.newsinfo.aspect.logging.Logged;
 import com.newsinfo.constants.Constants;
 import com.newsinfo.dto.NewsEndorserFeedDAO;
 import com.newsinfo.entity.EndorsersFeed;
@@ -30,6 +31,7 @@ public class EndorserFeederServiceImpl implements EndorsersFeederService {
     private final EndorserProfileService endorserProfileService;
 
     @Override
+    @Logged
     public EndorsersFeed createEndorserFeedEntry(long newsId, String transactionId) {
         EndorsersFeed endorsersFeed = new EndorsersFeed();
         endorsersFeed.setNewsId(newsId);
@@ -39,6 +41,7 @@ public class EndorserFeederServiceImpl implements EndorsersFeederService {
     }
 
     @Override
+    @Logged
     public String getEndorsersFeed() {
         List<NewsEndorserFeedDAO> feeds = newsInitializerRepository.findAllSortedByNewsPosted();
         String stringFeeds = null;
@@ -51,6 +54,7 @@ public class EndorserFeederServiceImpl implements EndorsersFeederService {
     }
 
     @Override
+    @Logged
     public void voteForNews(String endorserId, String newsId) {
 
         Optional<PolledEndorsedNews> hasEndorserAlreadyPolled =

@@ -1,5 +1,6 @@
 package com.newsinfo.controller;
 
+import com.newsinfo.aspect.logging.Logged;
 import com.newsinfo.model.endorser.RegisterRequest;
 import com.newsinfo.repository.EndorserProfileRepository;
 import com.newsinfo.service.EndorserProfileService;
@@ -23,6 +24,7 @@ public class EndorsersController {
     private final EndorsersFeederService endorsersFeederService;
 
     @PostMapping("/register")
+    @Logged
     public String registerEndorser(@RequestBody RegisterRequest registerRequest) {
         return endorserProfileService.registerEndorser(registerRequest);
     }
@@ -32,6 +34,7 @@ public class EndorsersController {
      * NewsTopic and the current number of endorsers
      */
     @GetMapping("/allEndorsersFeed")
+    @Logged
     public ResponseEntity<String> fetchEndorsersFeedData() {
         String feedData = endorsersFeederService.getEndorsersFeed();
         return ResponseEntity.ok(feedData);
@@ -43,6 +46,7 @@ public class EndorsersController {
      * for rewarding
      */
     @PutMapping("/{endorserId}/pollForNews/{newsId}")
+    @Logged
     public ResponseEntity<?> castVoteForNews(@PathVariable String endorserId, @PathVariable String newsId) {
         endorsersFeederService.voteForNews(endorserId, newsId);
         return ResponseEntity.of(Optional.empty());

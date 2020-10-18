@@ -1,5 +1,6 @@
 package com.newsinfo.service.implementation;
 
+import com.newsinfo.aspect.logging.Logged;
 import com.newsinfo.constants.Constants;
 import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.entity.ReporterProfile;
@@ -19,6 +20,7 @@ public class ReporterProfileServiceImpl implements ReporterProfileService {
     private final ReporterProfileRepository reporterProfileRepository;
 
     @Override
+    @Logged
     public String registerReporter(RegisterRequest registerRequest) {
         ReporterProfile newProfile = new ReporterProfile();
         newProfile.setFirstName(registerRequest.getFirstName());
@@ -30,6 +32,7 @@ public class ReporterProfileServiceImpl implements ReporterProfileService {
     }
 
     @Override
+    @Logged
     public void addReportedNews(String reporterId, NewsInitializer newsInitializer) {
         ReporterProfile newsReporterBy =
                 reporterProfileRepository.findById(reporterId).orElseThrow(() -> new EntityNotFoundException(reporterId));

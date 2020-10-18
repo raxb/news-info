@@ -1,5 +1,6 @@
 package com.newsinfo.service.implementation;
 
+import com.newsinfo.aspect.logging.Logged;
 import com.newsinfo.dto.NewsInitializerDAO;
 import com.newsinfo.entity.EndorsersFeed;
 import com.newsinfo.entity.NewsInitializer;
@@ -21,12 +22,8 @@ public class NewsDetailsServiceImpl implements NewsDetailsService {
     private final NewsInitializerRepository newsInitializerRepository;
     private final EndorsersFeederService endorsersFeederService;
 
-    /**
-     * Persist to the defined Entity
-     *
-     * @param newsInitializerDAO object for data-store
-     */
     @Override
+    @Logged
     public NewsInitializer saveNews(NewsInitializerDAO newsInitializerDAO) {
         NewsInitializer newsInitializer = populateNewsInitializerEntity(newsInitializerDAO);
         newsInitializerRepository.save(newsInitializer);
@@ -41,12 +38,6 @@ public class NewsDetailsServiceImpl implements NewsDetailsService {
         return newsInitializer;
     }
 
-    /**
-     * Mapper from DTO to Entity
-     *
-     * @param newsInitializerDAO object for data-store
-     * @return persistent Entity
-     */
     private NewsInitializer populateNewsInitializerEntity(NewsInitializerDAO newsInitializerDAO) {
         NewsInitializer newsInitializer = new NewsInitializer();
         newsInitializer.setTransactionId(newsInitializerDAO.getTransactionId());
@@ -59,6 +50,7 @@ public class NewsDetailsServiceImpl implements NewsDetailsService {
     }
 
     @Override
+    @Logged
     public NewsInitializer updateNews(NewsInitializer actualNews, NewsRequest modifiedNewsRequest) {
         actualNews.setTopic(modifiedNewsRequest.getTopic());
         actualNews.setLocation(modifiedNewsRequest.getEventLocation());

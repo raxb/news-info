@@ -1,5 +1,6 @@
 package com.newsinfo.service.implementation;
 
+import com.newsinfo.aspect.logging.Logged;
 import com.newsinfo.constants.Constants;
 import com.newsinfo.entity.EndorserProfile;
 import com.newsinfo.entity.PolledEndorsedNews;
@@ -19,6 +20,7 @@ public class EndorserProfileServiceImpl implements EndorserProfileService {
     private final EndorserProfileRepository endorserProfileRepository;
 
     @Override
+    @Logged
     public String registerEndorser(RegisterRequest registerRequest) {
         EndorserProfile newProfile = new EndorserProfile();
         newProfile.setFirstName(registerRequest.getFirstName());
@@ -30,6 +32,7 @@ public class EndorserProfileServiceImpl implements EndorserProfileService {
     }
 
     @Override
+    @Logged
     public void updateProfileForNewsPolled(String endorserId, String newsId) {
         EndorserProfile endorserProfile = endorserProfileRepository.findById(endorserId).orElseThrow(() -> new EntityNotFoundException(newsId));
         endorserProfile.addPolledEndorsedNews(new PolledEndorsedNews(newsId));

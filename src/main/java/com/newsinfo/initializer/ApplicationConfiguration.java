@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @ComponentScan(basePackages = {"com.newsinfo.*"})
-@EntityScan("com.newsinfo*")
-@EnableJpaRepositories("com.newsinfo.*")
+@EntityScan("com.newsinfo.*")
+@EnableJpaRepositories("com.newsinfo.repository")
 public class ApplicationConfiguration {
 }

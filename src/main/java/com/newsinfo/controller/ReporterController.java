@@ -1,5 +1,6 @@
 package com.newsinfo.controller;
 
+import com.newsinfo.aspect.logging.Logged;
 import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.model.NewsResponse;
@@ -26,11 +27,13 @@ public class ReporterController {
     private final NewsFeederHelper newsFeederHelper;
 
     @PostMapping("/register")
+    @Logged
     public String registerReporter(@RequestBody RegisterRequest registerRequest) {
         return reporterProfileService.registerReporter(registerRequest);
     }
 
     @PostMapping("/{reporterId}/reportNews")
+    @Logged
     public ResponseEntity<NewsResponse> addNews(@PathVariable String reporterId, @RequestBody NewsRequest newsRequest) {
         Map<String, Object> newsInitializerWithTransactions = newsInfoController.submitNewsTopic(newsRequest);
         NewsInitializer newsInitializer = (NewsInitializer) newsInitializerWithTransactions.get("newsInitializer");
@@ -42,6 +45,7 @@ public class ReporterController {
     }
 
     @PutMapping("/{reporterId}/updateNews/{newsId}")
+    @Logged
     public ResponseEntity<NewsResponse> updateNewsRequest(@RequestBody NewsRequest newsRequest,
                                                           @PathVariable String reporterId,
                                                           @PathVariable String newsId) {

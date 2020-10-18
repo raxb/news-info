@@ -1,5 +1,6 @@
 package com.newsinfo.service;
 
+import com.newsinfo.aspect.logging.Logged;
 import com.newsinfo.dto.NewsInitializerDAO;
 import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.model.NewsRequest;
@@ -37,6 +38,7 @@ public class NewsFeederHelper {
      *
      * @param newsRequest client request
      */
+    @Logged
     public Map<String, Object> createNewTopicWithDetails(NewsRequest newsRequest) {
         this.newsRequest = newsRequest;
         transactionDetails = new TransactionDetails();
@@ -64,6 +66,7 @@ public class NewsFeederHelper {
         newsInitializerDAO.setUpdated(false);
     }
 
+    @Logged
     public Map<String, Object> updateRequest(NewsRequest newsRequestUpdate, String reporterId, String newsId) {
         NewsInitializer actualNews = newsInitializerRepository.findById(Long.valueOf(newsId)).orElseThrow(() -> new EntityNotFoundException(newsId));
         Map<String, Object> newsInitializerWithTransactions = new HashMap<>();
@@ -93,6 +96,7 @@ public class NewsFeederHelper {
         return newsResponse;
     }
 
+    @Logged
     public void isNewsModifiable(NewsInitializer actualNews) {
         LocalDate reportedDate = LocalDate.parse(actualNews.getTransactionDate());
         LocalTime reportedTime = LocalTime.parse(actualNews.getTransactionTime());
