@@ -1,19 +1,17 @@
-package com.newsinfo.controller;
+package com.newsinfo.controller.handler;
 
+import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.service.NewsFeederHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.xml.ws.Response;
 import java.util.Map;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class NewsInfoController {
+public class NewsInfoHandler {
 
     private final NewsFeederHelper newsFeederHelper;
 
@@ -25,9 +23,7 @@ public class NewsInfoController {
         return newsFeederHelper.updateRequest(newsRequest, reporterId, newsId);
     }
 
-    @DeleteMapping("/{reporterId}/deleteNews/{transactionId}")
-    public Response<String> deleteNews(@PathVariable String reporterId, @PathVariable String transactionId) {
-
-        return null;
+    public NewsInitializer deleteNews(String reporterId, String newsId) {
+        return newsFeederHelper.deleteRequest(reporterId, newsId);
     }
 }

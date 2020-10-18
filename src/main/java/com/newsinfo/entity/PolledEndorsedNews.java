@@ -2,6 +2,7 @@ package com.newsinfo.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Objects;
 @Setter
 @Entity(name = "PolledEndorsedNews")
 @Table(name = "POLLED_ENDORSED_NEWS")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
 public class PolledEndorsedNews implements Serializable {
 
     @Id

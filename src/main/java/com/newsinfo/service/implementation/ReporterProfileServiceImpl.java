@@ -39,4 +39,13 @@ public class ReporterProfileServiceImpl implements ReporterProfileService {
         newsReporterBy.addNewsInitializer(newsInitializer);
         reporterProfileRepository.save(newsReporterBy);
     }
+
+    @Override
+    @Logged
+    public void deleteReportedNews(String reporterId, NewsInitializer newsForDeletion) {
+        ReporterProfile newsReporterBy =
+                reporterProfileRepository.findById(reporterId).orElseThrow(() -> new EntityNotFoundException(reporterId));
+        newsReporterBy.removeNewsInitializer(newsForDeletion);
+        reporterProfileRepository.flush();
+    }
 }

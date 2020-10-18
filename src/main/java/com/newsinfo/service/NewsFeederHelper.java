@@ -87,6 +87,16 @@ public class NewsFeederHelper {
         return newsInitializerWithTransactions;
     }
 
+    @Logged
+    public NewsInitializer deleteRequest(String reporterId, String newsId) {
+        NewsInitializer newsToRemove =
+                newsInitializerRepository.findById(Long.valueOf(newsId)).orElseThrow(() -> new EntityNotFoundException(newsId));
+        if (reporterId.equals(newsToRemove.getReporterProfile().getId()))
+            return newsToRemove;
+        else
+            throw new RuntimeException("You are not authorized to delete this News");
+    }
+
     public NewsResponse generateResponse(TransactionDetails generatedTransactions, NewsRequest newsRequested,
                                          long newsId) {
         NewsResponse newsResponse = new NewsResponse();

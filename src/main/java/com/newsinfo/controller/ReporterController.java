@@ -1,6 +1,7 @@
 package com.newsinfo.controller;
 
 import com.newsinfo.aspect.logging.Logged;
+import com.newsinfo.controller.handler.NewsInfoHandler;
 import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.model.NewsResponse;
@@ -22,7 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ReporterController {
 
-    private final NewsInfoController newsInfoController;
+    private final NewsInfoHandler newsInfoHandler;
     private final ReporterProfileService reporterProfileService;
     private final NewsFeederHelper newsFeederHelper;
 
@@ -35,7 +36,7 @@ public class ReporterController {
     @PostMapping("/{reporterId}/reportNews")
     @Logged
     public ResponseEntity<NewsResponse> addNews(@PathVariable String reporterId, @RequestBody NewsRequest newsRequest) {
-        Map<String, Object> newsInitializerWithTransactions = newsInfoController.submitNewsTopic(newsRequest);
+        Map<String, Object> newsInitializerWithTransactions = newsInfoHandler.submitNewsTopic(newsRequest);
         NewsInitializer newsInitializer = (NewsInitializer) newsInitializerWithTransactions.get("newsInitializer");
         TransactionDetails transactionDetails = (TransactionDetails) newsInitializerWithTransactions.get("transactionDetails");
         NewsResponse newsResponse = newsFeederHelper.generateResponse(transactionDetails, newsRequest,
@@ -49,12 +50,20 @@ public class ReporterController {
     public ResponseEntity<NewsResponse> updateNewsRequest(@RequestBody NewsRequest newsRequest,
                                                           @PathVariable String reporterId,
                                                           @PathVariable String newsId) {
-        Map<String, Object> newsInitializerWithTransactions = newsInfoController.updateNewsRequest(newsRequest,
+        Map<String, Object> newsInitializerWithTransactions = newsInfoHandler.updateNewsRequest(newsRequest,
                 reporterId, newsId);
         NewsInitializer newsInitializer = (NewsInitializer) newsInitializerWithTransactions.get("newsInitializer");
         TransactionDetails transactionDetails = (TransactionDetails) newsInitializerWithTransactions.get("transactionDetails");
         NewsResponse newsResponse = newsFeederHelper.generateResponse(transactionDetails, newsRequest,
                 newsInitializer.getNewsId());
         return ResponseEntity.ok(newsResponse);
+    }
+
+    @DeleteMapping("/{reporterId}/deleteNews/{newsId}")
+    @Logged
+    public ResponseEntity<String> deleteNews(@PathVariable String reporterId, @PathVariable String newsId) {
+        NewsInitializer newsForDeletion = newsInfoHandler.deleteNews(reporterId, newsId);
+        reporterProfileService.deleteReportedNews(reporterId, newsForDeletion);
+        return ResponseEntity.ok("News has been successfully deleted " + newsId);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.newsinfo.dto.NewsEndorserFeedDAO;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.io.Serializable;
 @Setter
 @Entity(name = "NewsInitializer")
 @Table(name = "NEWS_INITIALIZER")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
 @NamedNativeQuery(
         name = "NewsInitializer.NewsEndorserFeedDataQuery",
         query = "select ni.news_id,ni.images,ni.location,ni.topic,ni.transaction_date,ni.transaction_time," +

@@ -11,4 +11,6 @@ public interface ReporterProfileService {
     String registerReporter(RegisterRequest registerRequest);
 
     void addReportedNews(String reporterId, NewsInitializer newsInitializer);
+
+    void deleteReportedNews(String reporterId, NewsInitializer newsForDeletion);
 }

@@ -3,6 +3,7 @@ package com.newsinfo.entity;
 import com.newsinfo.utils.generator.StringPrefixedSequenceIdGenerator;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 @Setter
 @Entity(name = "ReporterProfile")
 @Table(name = "REPORTER_PROFILE")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
 public class ReporterProfile implements Serializable {
 
     @Id
