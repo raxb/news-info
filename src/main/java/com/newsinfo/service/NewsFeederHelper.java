@@ -3,6 +3,7 @@ package com.newsinfo.service;
 import com.newsinfo.aspect.logging.Logged;
 import com.newsinfo.dto.NewsInitializerDAO;
 import com.newsinfo.entity.NewsInitializer;
+import com.newsinfo.exceptions.UpdateDeniedException;
 import com.newsinfo.model.NewsRequest;
 import com.newsinfo.model.NewsResponse;
 import com.newsinfo.model.TransactionDetails;
@@ -74,7 +75,7 @@ public class NewsFeederHelper {
         if (reporterId.equals(actualNews.getReporterProfile().getId()))
             isNewsModifiable(actualNews);
         else
-            throw new RuntimeException("You are not allowed to update");
+            throw new UpdateDeniedException("You are not allowed to update");
 
         NewsInitializer updatedEntity = newsDetailsServiceImpl.updateNews(actualNews, newsRequestUpdate);
 
@@ -94,7 +95,7 @@ public class NewsFeederHelper {
         if (reporterId.equals(newsToRemove.getReporterProfile().getId()))
             return newsToRemove;
         else
-            throw new RuntimeException("You are not authorized to delete this News");
+            throw new UpdateDeniedException("You are not authorized to delete this News");
     }
 
     public NewsResponse generateResponse(TransactionDetails generatedTransactions, NewsRequest newsRequested,
@@ -114,7 +115,7 @@ public class NewsFeederHelper {
         LocalTime currentTime = LocalTime.now();
 
         if (actualNews.isUpdated() || (reportedDate.isBefore(currentDate) || Duration.between(reportedTime,
-                currentTime).toMinutes() > 15)) throw new RuntimeException("News already updated or updation time has" +
+                currentTime).toMinutes() > 15)) throw new UpdateDeniedException("News already updated or updation time has" +
                 " lapsed");
     }
 }

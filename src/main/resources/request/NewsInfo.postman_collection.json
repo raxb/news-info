@@ -1,205 +1,237 @@
 {
-  "info": {
-    "_postman_id": "305625b1-601b-423d-8a42-102265e89187",
-    "name": "NewsInfo",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "http://localhost:8080/v1/reporter/REP_00006/reportNews",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "type": "text",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"topic\": \"news_9\",\n    \"location\": \"home\",\n    \"images\": \"NA\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/v1/reporter/REP_00004/reportNews",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "v1",
-            "reporter",
-            "REP_00004",
-            "reportNews"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "http://localhost:8080/v1/reporter/REP_00004/updateNews/1",
-      "request": {
-        "method": "PUT",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"topic\": \"news_9_updated\",\r\n    \"location\": \"home\",\r\n    \"images\": \"NA\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/v1/reporter/REP_00004/updateNews/9",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "v1",
-            "reporter",
-            "REP_00004",
-            "updateNews",
-            "9"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "http://localhost:8080/v1/newsinfo/allEndorsersFeed",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/v1/endorser/allEndorsersFeed",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "v1",
-            "endorser",
-            "allEndorsersFeed"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "http://localhost:8080/v1/endorser/register",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"firstName\":\"Bruce\",\r\n    \"lastName\":\"Wayne\",\r\n    \"location\":\"NC\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/v1/endorser/register",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "v1",
-            "endorser",
-            "register"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "http://localhost:8080/v1/endorser/NEN_00007/pollForNews/7",
-      "request": {
-        "method": "PUT",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/v1/endorser/NEN_00007/pollForNews/7",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "v1",
-            "endorser",
-            "NEN_00007",
-            "pollForNews",
-            "7"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "http://localhost:8080/v1/reporter/register",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"firstName\":\"EVR\",\r\n    \"lastName\":\"EVR\",\r\n    \"location\":\"Chennai\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/v1/reporter/register",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "v1",
-            "reporter",
-            "register"
-          ]
-        }
-      },
-      "response": []
-    }
-  ],
-  "protocolProfileBehavior": {}
+	"info": {
+		"_postman_id": "305625b1-601b-423d-8a42-102265e89187",
+		"name": "NewsInfo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/v1/reporter/REP_00006/reportNews",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"topic\": \"news_41\",\n    \"location\": \"home\",\n    \"images\": \"NA\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/reporter/REP_00009/reportNews",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"reporter",
+						"REP_00009",
+						"reportNews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/v1/reporter/REP_00004/updateNews/1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"topic\": \"news_41_updated\",\r\n    \"location\": \"home\",\r\n    \"images\": \"NA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/reporter/REP_00009/updateNews/41",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"reporter",
+						"REP_00009",
+						"updateNews",
+						"41"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/v1/newsinfo/allEndorsersFeed",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/endorser/allEndorsersFeed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"endorser",
+						"allEndorsersFeed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/v1/endorser/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\":\"LinkedIn\",\r\n    \"lastName\":\"LinkedIn\",\r\n    \"location\":\"CA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/endorser/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"endorser",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/v1/endorser/NEN_00007/pollForNews/7",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/endorser/NEN_00008/pollForNews/41",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"endorser",
+						"NEN_00008",
+						"pollForNews",
+						"41"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/v1/reporter/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\":\"SunTV\",\r\n    \"lastName\":\"EVR\",\r\n    \"location\":\"Chennai\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/reporter/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"reporter",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/v1/reporter/REP_00004/deleteNews/31",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/reporter/REP_00009/deleteNews/40",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"reporter",
+						"REP_00009",
+						"deleteNews",
+						"40"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
 }

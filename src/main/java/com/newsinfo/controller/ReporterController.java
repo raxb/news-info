@@ -11,6 +11,7 @@ import com.newsinfo.service.NewsFeederHelper;
 import com.newsinfo.service.ReporterProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,9 +62,9 @@ public class ReporterController {
 
     @DeleteMapping("/{reporterId}/deleteNews/{newsId}")
     @Logged
-    public ResponseEntity<String> deleteNews(@PathVariable String reporterId, @PathVariable String newsId) {
+    public ResponseEntity<?> deleteNews(@PathVariable String reporterId, @PathVariable String newsId) {
         NewsInitializer newsForDeletion = newsInfoHandler.deleteNews(reporterId, newsId);
         reporterProfileService.deleteReportedNews(reporterId, newsForDeletion);
-        return ResponseEntity.ok("News has been successfully deleted " + newsId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

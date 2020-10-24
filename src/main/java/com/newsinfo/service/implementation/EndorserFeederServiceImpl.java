@@ -7,6 +7,7 @@ import com.newsinfo.constants.Constants;
 import com.newsinfo.dto.NewsEndorserFeedDAO;
 import com.newsinfo.entity.EndorsersFeed;
 import com.newsinfo.entity.PolledEndorsedNews;
+import com.newsinfo.exceptions.PollException;
 import com.newsinfo.repository.EndorsersFeedRepository;
 import com.newsinfo.repository.NewsInitializerRepository;
 import com.newsinfo.repository.PolledEndorsedNewsRepository;
@@ -59,7 +60,7 @@ public class EndorserFeederServiceImpl implements EndorsersFeederService {
 
         Optional<PolledEndorsedNews> hasEndorserAlreadyPolled =
                 polledEndorsedNewsRepository.findProfilePolledNews(endorserId, newsId);
-        if (hasEndorserAlreadyPolled.isPresent()) throw new RuntimeException("Cannot re-cast vote on the News");
+        if (hasEndorserAlreadyPolled.isPresent()) throw new PollException("Cannot re-cast vote on the News");
 
         endorserProfileService.updateProfileForNewsPolled(endorserId, newsId);
 
