@@ -11,5 +11,4 @@ public interface NewsDetailsService {
     NewsInitializer saveNews(NewsInitializerDAO newsInitializerDAO);
 
     NewsInitializer updateNews(NewsInitializer newsInitializer, NewsRequest modifiedNewsRequest);
-    //String deleteNews(String reporterId);
 }

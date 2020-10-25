@@ -8,6 +8,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * JPA Entity for CRUD operations
@@ -67,5 +68,18 @@ public class NewsInitializer implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reporter_id")
     private ReporterProfile reporterProfile;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NewsInitializer)) return false;
+        NewsInitializer that = (NewsInitializer) o;
+        return getNewsId() != null && getNewsId().equals(that.getNewsId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNewsId());
+    }
 
 }
