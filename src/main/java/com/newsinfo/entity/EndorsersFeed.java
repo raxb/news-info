@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -22,4 +23,17 @@ public class EndorsersFeed implements Serializable {
     private String transactionId;
 
     private Integer pollCount;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EndorsersFeed)) return false;
+        EndorsersFeed that = (EndorsersFeed) o;
+        return getNewsId() != null && getNewsId().equals(that.getNewsId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNewsId());
+    }
 }
