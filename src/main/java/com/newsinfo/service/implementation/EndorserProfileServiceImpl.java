@@ -34,7 +34,7 @@ public class EndorserProfileServiceImpl implements EndorserProfileService {
     @Override
     @Logged
     public void updateProfileForNewsPolled(String endorserId, String newsId) {
-        EndorserProfile endorserProfile = endorserProfileRepository.findById(endorserId).orElseThrow(() -> new EntityNotFoundException(newsId));
+        EndorserProfile endorserProfile = endorserProfileRepository.findById(endorserId).orElseThrow(() -> new EntityNotFoundException(endorserId));
         endorserProfile.addPolledEndorsedNews(new PolledEndorsedNews(newsId));
         endorserProfileRepository.saveAndFlush(endorserProfile);
     }

@@ -55,20 +55,26 @@ public class EndorserFeederServiceImpl implements EndorsersFeederService {
     }
 
     @Override
-    @Logged
     public void voteForNews(String endorserId, String newsId) {
-
-        Optional<PolledEndorsedNews> hasEndorserAlreadyPolled =
-                polledEndorsedNewsRepository.findProfilePolledNews(endorserId, newsId);
-        if (hasEndorserAlreadyPolled.isPresent()) throw new PollException("Cannot re-cast vote on the News");
-
+        validatePoll(endorserId, newsId);
         endorserProfileService.updateProfileForNewsPolled(endorserId, newsId);
+        identifyAndPoll(newsId);
+    }
 
+    @Logged
+    protected void identifyAndPoll(String newsId) {
         EndorsersFeed endorserPolled = endorsersFeedRepository
                 .findById(Long.valueOf(newsId)).orElseThrow(() -> new EntityNotFoundException(newsId));
         AtomicInteger pollIncrement = new AtomicInteger(endorserPolled.getPollCount());
         endorserPolled.setPollCount(pollIncrement.incrementAndGet());
 
         endorsersFeedRepository.saveAndFlush(endorserPolled);
+    }
+
+    @Logged
+    public void validatePoll(String endorserId, String newsId) {
+        Optional<PolledEndorsedNews> hasEndorserAlreadyPolled =
+                polledEndorsedNewsRepository.findProfilePolledNews(endorserId, newsId);
+        if (hasEndorserAlreadyPolled.isPresent()) throw new PollException("Cannot re-cast vote on the News");
     }
 }
