@@ -6,7 +6,6 @@ import com.newsinfo.aspect.logging.Logged;
 import com.newsinfo.constants.Constants;
 import com.newsinfo.dto.NewsEndorserFeedDAO;
 import com.newsinfo.entity.EndorsersFeed;
-import com.newsinfo.entity.PolledEndorsedNews;
 import com.newsinfo.exceptions.PollException;
 import com.newsinfo.repository.EndorsersFeedRepository;
 import com.newsinfo.repository.NewsInitializerRepository;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -73,8 +71,12 @@ public class EndorserFeederServiceImpl implements EndorsersFeederService {
 
     @Logged
     public void validatePoll(String endorserId, String newsId) {
-        Optional<PolledEndorsedNews> hasEndorserAlreadyPolled =
-                polledEndorsedNewsRepository.findProfilePolledNews(endorserId, newsId);
-        if (hasEndorserAlreadyPolled.isPresent()) throw new PollException("Cannot re-cast vote on the News");
+        newsInitializerRepository.findById(Long.valueOf(newsId))
+                .orElseThrow(() -> new PollException("Cannot cast for non-existent News"));
+
+        polledEndorsedNewsRepository.findProfilePolledNews(endorserId, newsId)
+                .ifPresent(alreadyPolled -> {
+                    throw new PollException("Cannot re-cast vote on the News");
+                });
     }
 }

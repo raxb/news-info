@@ -3,6 +3,7 @@ package com.newsinfo.service.implementation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.newsinfo.entity.EndorserProfile;
 import com.newsinfo.entity.EndorsersFeed;
+import com.newsinfo.entity.NewsInitializer;
 import com.newsinfo.entity.PolledEndorsedNews;
 import com.newsinfo.exceptions.PollException;
 import com.newsinfo.initializer.InitializerApplication;
@@ -102,8 +103,17 @@ class EndorserFeederServiceImplTest {
 
         doReturn(Optional.empty()).when(polledEndorsedNewsRepository).findProfilePolledNews(testProfile.getId(),
                 testPolledEndorsedNews.getNewsId());
+        doReturn(Optional.of(NewsInitializer.class)).when(newsInitializerRepository).findById(Long.valueOf(testPolledEndorsedNews.getNewsId()));
         assertDoesNotThrow(() -> endorserFeederService.validatePoll(testProfile.getId(),
                 testPolledEndorsedNews.getNewsId()));
+    }
+
+    @Test
+    public void testValidatePollNewsNA() {
+        String testNewsId = "1";
+        doReturn(Optional.empty()).when(newsInitializerRepository).findById(Long.valueOf(testNewsId));
+        assertThrows(PollException.class, () -> endorserFeederService.validatePoll("NEN_12345",
+                testNewsId));
     }
 
     @Test
